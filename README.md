@@ -7,5 +7,5 @@ To use with this library, this file should be renamed to "client_secret.json" an
 
 
 Dependencies:
-gspread
+gspread, 
 oauth2client
