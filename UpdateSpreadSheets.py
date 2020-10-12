@@ -54,6 +54,10 @@ class UpdateSheet:
         self._open_sheet()
 
     def _open_sheet(self):
+        """
+        Eatablishes connection to the spread sheet
+        :return: 
+        """
         print(f"LOG INFO: Trying to establish connection to {self.sheet_name}")
         error = True
         tries = 0
@@ -80,6 +84,11 @@ class UpdateSheet:
             self.e = SheetErrorHandler()
 
     def get_records(self):
+        """
+        Returns a list of all the records in the sheet connected to
+        :return: List of dictionaries
+        """
+
         if self.sheet is None:
             return self.e.get_records()
 
@@ -116,6 +125,14 @@ class UpdateSheet:
         return r
 
     def add_unique_record(self, record_to_be_added: list, unique_column_name: str):
+        """
+        Adds a record after checking the sheet if the value under a specific field in the record matches that same field value for any record already in the table
+        The column that needs to be unique is specified in the method
+        :param record_to_be_added: record to be added supplied as a list
+        :param unique_column_name: column/ field that needs to have unique values
+        :return: 
+        """
+
         if self.sheet is None:
             return self.e.add_unique_record()
 
@@ -180,6 +197,11 @@ class UpdateSheet:
             print(f"LOG INFO: Value of {unique_column_name} ({check_value}) for current record already exists")
 
     def get_most_recent_record(self):
+        """
+        Returns the most recently added record from the sheet.
+        The most recently added record is the one at the bottom of the table.
+        :return:  dict representing the most recently added record in the table
+        """
         if self.sheet is None:
             return self.e.get_most_recent_record()
 
@@ -191,6 +213,11 @@ class UpdateSheet:
         return most_recent_record
 
     def get_oldest_record(self):
+        """
+        Gets the oldest record (dict) in a sheet.
+        The olders record is the one at the top of the table
+        :return: dict representing the oldest record in a sheet
+        """
         if self.sheet is None:
             return self.e.get_oldest_record()
 
@@ -205,7 +232,6 @@ class UpdateSheet:
         filter = str(filter)
         """
         Returns a list of dict objects in which any column contains the specified filter.
-
         :param filter:
         :return:List of dictionaries
         """
@@ -226,6 +252,12 @@ class UpdateSheet:
         return match_list
 
     def add_none_unique_record(self, record_to_be_added: list):
+        """
+        Adds a new record with out checking the sheet for said record. The record supplied must be a list where each element corresponds
+        to the fields in the table
+        :param record_to_be_added: list of elements matching the fields in the table
+        :return:
+        """
         if self.sheet is None:
             return self.e.add_none_unique_record()
 
@@ -256,6 +288,12 @@ class UpdateSheet:
                 print(f"LOG Error: Other exception occurred: Details {other_e} ")
 
     def _get_records_object_matching_filter(self, filter: str):
+        """
+        Returns a list of objects that contain address information about the cells that contain the specified filter
+        :param filter: Specified word that is searched for
+        :return:
+        """
+
         filter = str(filter)
         if self.sheet is None:
             return self.e.get_records_matching_filter()
@@ -294,8 +332,9 @@ class UpdateSheet:
 
     def update_record(self, filter: str, updated_rec: list):
         """
-        Updates a rows matching the filter supplied. (The row much contain the filter supplied)
+        Updates a rows matching the filter supplied. (The updated row must contain the filter supplied)
         :param filter: filter matching a cell from the record
+        :param updated_rec: record that will be used to update the current record in the sheet that contains the specified filter word
         :return:
         """
         # Need to get list of headers to know how many columns are in sheet
@@ -320,12 +359,12 @@ class UpdateSheet:
             updated_rows_list.append(row)
 
     def delete_record(self, value: str):
-        value = str(value)
         """
         Deletes a row (or rows) that contains a given value
         :param value:
         :return:
         """
+        value = str(value)
         if self.sheet is None:
             return self.e.delete_record()
 
